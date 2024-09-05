@@ -58,13 +58,36 @@ define('settings/object', function () {
 		create: function (ignored, tagName) {
 			return helper.createElement(tagName || 'div');
 		},
-		set: function (element, value) {
+
+		helperF: function (element, value, separator, propertyIndex) {
+			console.log('Heidi_Tao1');
 			const properties = element.data('attributes') || element.data('properties');
 			const key = element.data('key') || element.data('parent');
+			let attributes;
+			attributes = properties[propertyIndex];
+			if (typeof attributes !== 'object') {
+				attributes = {};
+			}
+			const propertyName = attributes['data-prop'] || attributes['data-property'] || propertyIndex;
+			if (value[propertyName] === undefined && attributes['data-new'] !== undefined) {
+				value[propertyName] = attributes['data-new'];
+			}
+			addObjectPropertyElement(
+				element,
+				key,
+				attributes,
+				propertyName,
+				value[propertyName],
+				separator.clone(),
+				function (el) { element.append(el); }
+			);
+		},
+		
+		set: function (element, value) {
+			console.log('Heidi_Tao2');
+			const properties = element.data('attributes') || element.data('properties');
 			let separator = element.data('split') || ', ';
 			let propertyIndex;
-			let propertyName;
-			let attributes;
 			separator = (function () {
 				try {
 					return $(separator);
@@ -79,23 +102,7 @@ define('settings/object', function () {
 			if (Array.isArray(properties)) {
 				for (propertyIndex in properties) {
 					if (properties.hasOwnProperty(propertyIndex)) {
-						attributes = properties[propertyIndex];
-						if (typeof attributes !== 'object') {
-							attributes = {};
-						}
-						propertyName = attributes['data-prop'] || attributes['data-property'] || propertyIndex;
-						if (value[propertyName] === undefined && attributes['data-new'] !== undefined) {
-							value[propertyName] = attributes['data-new'];
-						}
-						addObjectPropertyElement(
-							element,
-							key,
-							attributes,
-							propertyName,
-							value[propertyName],
-							separator.clone(),
-							function (el) { element.append(el); }
-						);
+						helperF(element, value, separator, propertyIndex);
 					}
 				}
 			}
@@ -120,5 +127,6 @@ define('settings/object', function () {
 		},
 	};
 
+	console.log("Heidi_Tao3");
 	return SettingsObject;
 });
