@@ -58,8 +58,7 @@ define('settings/object', function () {
 		create: function (ignored, tagName) {
 			return helper.createElement(tagName || 'div');
 		},
-
-		helperF: function (element, value, separator, propertyIndex) {
+		helper_f: function (element, value, separator, propertyIndex) {
 			console.log('Heidi_Tao1');
 			const properties = element.data('attributes') || element.data('properties');
 			const key = element.data('key') || element.data('parent');
@@ -82,7 +81,6 @@ define('settings/object', function () {
 				function (el) { element.append(el); }
 			);
 		},
-		
 		set: function (element, value) {
 			console.log('Heidi_Tao2');
 			const properties = element.data('attributes') || element.data('properties');
@@ -102,7 +100,7 @@ define('settings/object', function () {
 			if (Array.isArray(properties)) {
 				for (propertyIndex in properties) {
 					if (properties.hasOwnProperty(propertyIndex)) {
-						helperF(element, value, separator, propertyIndex);
+						this.helper_f(element, value, separator, propertyIndex);
 					}
 				}
 			}
@@ -127,6 +125,6 @@ define('settings/object', function () {
 		},
 	};
 
-	console.log("Heidi_Tao3");
+	console.log('Heidi_Tao3');
 	return SettingsObject;
 });
